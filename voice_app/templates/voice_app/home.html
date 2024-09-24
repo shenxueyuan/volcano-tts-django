@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>语音合成项目</title>
+</head>
+<body>
+    <h1>欢迎来到语音合成项目</h1>
+    <nav>
+        <ul>
+            <li><a href="{% url 'train_voice' %}">训练新音色</a></li>
+            <li><a href="{% url 'synthesize_voice' %}">合成语音</a></li>
+            <li><a href="{% url 'voice_list' %}">音色列表</a></li>
+            <li><a href="{% url 'audio_list' %}">合成音频列表</a></li>
+        </ul>
+    </nav>
+    <p>这是一个使用Django构建的语音合成Web应用。您可以训练新的音色模型,合成语音,并管理您的音色和合成音频。</p>
+</body>
+</html>

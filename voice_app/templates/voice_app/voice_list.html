@@ -1,0 +1,6 @@
+<h1>音色列表</h1>
+<ul>
+    {% for voice in voices %}
+    <li>{{ voice.name }} (ID: {{ voice.speaker_id }})</li>
+    {% endfor %}
+</ul>

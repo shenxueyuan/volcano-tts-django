@@ -1,0 +1,12 @@
+<h1>合成音频列表</h1>
+<ul>
+    {% for audio in audios %}
+    <li>
+        {{ audio.voice_model.name }} - {{ audio.text|truncatechars:50 }}
+        <audio controls>
+            <source src="{{ audio.audio_file.url }}" type="audio/mpeg">
+            您的浏览器不支持音频元素。
+        </audio>
+    </li>
+    {% endfor %}
+</ul>

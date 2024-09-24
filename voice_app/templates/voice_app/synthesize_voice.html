@@ -1,0 +1,6 @@
+<h1>合成语音</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">合成</button>
+</form>

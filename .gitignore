@@ -1,0 +1,8 @@
+__pycache__
+media
+*.sqlite3
+.env
+.DS_Store
+.vscode
+*.m4a
+*.mp3
