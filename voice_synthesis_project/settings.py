@@ -1,6 +1,10 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import sys
+
+# 删除这行：
+# sys.setdefaultencoding('utf-8')
 
 # 加载 .env 文件
 load_dotenv()
@@ -72,6 +76,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ... 其他设置 ...
 
+# 默认可用音色
+DEFAULT_SPEAKERS = [
+    ('S_d4KfSrH41', '田田的美音'),
+    # 在这里添加更多默认音色
+]
+
 # 静态文件设置
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -86,5 +96,13 @@ ROOT_URLCONF = 'voice_synthesis_project.urls'
 # 火山引擎 API 设置
 VOLCANO_ACCESS_KEY = os.getenv('VOLCANO_ACCESS_KEY')
 VOLCANO_SECRET_KEY = os.getenv('VOLCANO_SECRET_KEY')
+VOLCANO_APPID = os.getenv('VOLCANO_APPID')
 
-# ... 其他设置 ...
+# 默认字符集设置
+DEFAULT_CHARSET = 'utf-8'
+
+
+# 确保这些值都已设置
+if not all([VOLCANO_ACCESS_KEY, VOLCANO_SECRET_KEY, VOLCANO_APPID]):
+    raise ValueError(
+        "请在 .env 文件中设置 VOLCANO_ACCESS_KEY, VOLCANO_SECRET_KEY 和 VOLCANO_APPID")

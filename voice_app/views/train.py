@@ -4,7 +4,6 @@ from voice_app.models import VoiceModel
 from voice_app.forms import VoiceModelForm
 from volcano_engine.train import train_voice_model
 import os
-import uuid
 
 
 def train_voice(request):
@@ -12,13 +11,14 @@ def train_voice(request):
         form = VoiceModelForm(request.POST, request.FILES)
         if form.is_valid():
             audio_file = request.FILES['audio_file']
-            name = form.cleaned_data['name']
+            voice_model = form.cleaned_data['speaker_id']  # 这是一个 VoiceModel 实例
+            speaker_id = voice_model.speaker_id  # 获取 speaker_id 字符串
 
             training_audio_dir = os.path.join(
                 settings.MEDIA_ROOT, 'training_audio')
             os.makedirs(training_audio_dir, exist_ok=True)
 
-            file_name = f'{uuid.uuid4()}.m4a'
+            file_name = f'{speaker_id}{os.path.splitext(audio_file.name)[1]}'
             file_path = os.path.join(training_audio_dir, file_name)
 
             with open(file_path, 'wb+') as destination:
@@ -26,19 +26,25 @@ def train_voice(request):
                     destination.write(chunk)
 
             try:
+                appid = settings.VOLCANO_APPID
+
                 response = train_voice_model(
                     settings.VOLCANO_ACCESS_KEY,
                     settings.VOLCANO_SECRET_KEY,
-                    file_path
+                    file_path,
+                    appid,
+                    speaker_id  # 使用 speaker_id 字符串而不是 VoiceModel 实例
                 )
-                if response['code'] == 3000:
-                    speaker_id = response['data']['speaker_id']
-                    VoiceModel.objects.create(name=name, speaker_id=speaker_id)
-                    os.remove(file_path)
+                if response.get('BaseResp', {}).get('StatusCode') == 0:
+                    voice_model.status = VoiceModel.TrainingStatus.AVAILABLE
+                    voice_model.save()
                     return redirect('voice_list')
                 else:
-                    form.add_error(None, f"API 错误: {
-                                   response.get('message', '未知错误')}")
+                    error_message = response.get(
+                        'BaseResp', {}).get('StatusMessage', '未知错误')
+                    form.add_error(None, f"API 错误: {error_message}")
+            except ValueError as e:
+                form.add_error(None, f"文件格式错误: {str(e)}")
             except Exception as e:
                 form.add_error(None, f"发生错误: {str(e)}")
             finally:
