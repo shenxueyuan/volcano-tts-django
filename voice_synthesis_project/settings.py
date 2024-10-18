@@ -78,7 +78,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # 默认可用音色
 DEFAULT_SPEAKERS = [
-    ('S_d4KfSrH41', '田田的美音'),
+    ('S_ZIOtOT001', '王一博'),
     # 在这里添加更多默认音色
 ]
 
