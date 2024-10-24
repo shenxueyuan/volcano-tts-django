@@ -12,6 +12,9 @@ class VoiceModel(models.Model):
     speaker_id = models.CharField(max_length=100, unique=True)
     name = models.CharField(max_length=255)  # 新增字段
     update_at = models.DateTimeField(auto_now=True)  # 修改为 auto_now
+    appid = models.CharField(max_length=100, unique=True)
+    access_token = models.CharField(max_length=100, unique=True)
+    secret_token = models.CharField(max_length=100, unique=True)
     status = models.CharField(
         max_length=2,
         choices=TrainingStatus.choices,

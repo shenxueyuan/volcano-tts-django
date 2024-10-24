@@ -25,11 +25,11 @@ def synthesize_voice(request):
             access_token = settings.VOLCANO_ACCESS_KEY
 
             response = synthesize_speech(
-                settings.VOLCANO_ACCESS_KEY,
-                settings.VOLCANO_SECRET_KEY,
+                voice_model.access_token,
+                voice_model.secret_token,
                 text,
                 voice_model.speaker_id,
-                settings.VOLCANO_APPID,
+                voice_model.appid,
                 access_token,
                 user_id
             )

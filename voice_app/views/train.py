@@ -13,6 +13,9 @@ def train_voice(request):
             audio_file = request.FILES['audio_file']
             voice_model = form.cleaned_data['speaker_id']  # 这是一个 VoiceModel 实例
             speaker_id = voice_model.speaker_id  # 获取 speaker_id 字符串
+            appid = voice_model.appid
+            access_token = voice_model.access_token
+            secret_token = voice_model.secret_token
 
             training_audio_dir = os.path.join(
                 settings.MEDIA_ROOT, 'training_audio')
@@ -26,11 +29,11 @@ def train_voice(request):
                     destination.write(chunk)
 
             try:
-                appid = settings.VOLCANO_APPID
+
 
                 response = train_voice_model(
-                    settings.VOLCANO_ACCESS_KEY,
-                    settings.VOLCANO_SECRET_KEY,
+                    access_token,
+                    secret_token,
                     file_path,
                     appid,
                     speaker_id  # 使用 speaker_id 字符串而不是 VoiceModel 实例
